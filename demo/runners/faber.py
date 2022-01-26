@@ -85,6 +85,7 @@ class FaberAgent(AriesAgent):
                 "date": "2018-05-28",
                 "degree": "Maths",
                 "birthdate_dateint": birth_date.strftime(birth_date_format),
+                "first_name": "Alice",
                 "timestamp": str(int(time.time())),
             }
 
@@ -112,6 +113,7 @@ class FaberAgent(AriesAgent):
                     "date": "2018-05-28",
                     "degree": "Maths",
                     "birthdate_dateint": birth_date.strftime(birth_date_format),
+                    "first_name": "Alice",
                     "timestamp": str(int(time.time())),
                 }
 
@@ -245,6 +247,10 @@ class FaberAgent(AriesAgent):
                 req_attrs = [
                     {
                         "name": "name",
+                        "restrictions": [{"schema_name": "degree schema"}],
+                    },
+                    {
+                        "name": "first_name",
                         "restrictions": [{"schema_name": "degree schema"}],
                     },
                     {
@@ -408,6 +414,11 @@ async def main(args):
             "date",
             "degree",
             "birthdate_dateint",
+            "first_name",
+            # "last_name",
+            # "address",
+            # "public_id",
+            # "mynumber",
             "timestamp",
         ]
         if faber_agent.cred_type == CRED_FORMAT_INDY:
