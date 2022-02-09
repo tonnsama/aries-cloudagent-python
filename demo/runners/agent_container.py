@@ -333,13 +333,13 @@ class AriesAgent(DemoAgent):
                 }
 
                 log_status("#26 Send the proof to X")
-                # await self.admin_POST(
-                #     (
-                #         "/present-proof/records/"
-                #         f"{presentation_exchange_id}/send-presentation"
-                #     ),
-                #     request,
-                # )
+                await self.admin_POST(
+                    (
+                        "/present-proof/records/"
+                        f"{presentation_exchange_id}/send-presentation"
+                    ),
+                    request,
+                )
             except ClientError:
                 pass
 
