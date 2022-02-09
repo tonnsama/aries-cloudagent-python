@@ -81,12 +81,15 @@ class FaberAgent(AriesAgent):
         if aip == 10:
             # define attributes to send for credential
             self.cred_attrs[cred_def_id] = {
-                "name": "Alice Smith",
-                "date": "2018-05-28",
-                "degree": "Maths",
+                "public_id": "aaaabbbbccccdddd",
+                "mynumber": "0123456789",
+                "last_name": "Kojin",
+                "first_name": "Hanako",
+                "zip": "0123456",
+                "pref": "Tokyo",
+                "city": "Shinjuku",
+                "address": "XX",
                 "birthdate_dateint": birth_date.strftime(birth_date_format),
-                "first_name": "Alice",
-                "timestamp": str(int(time.time())),
             }
 
             cred_preview = {
@@ -109,12 +112,15 @@ class FaberAgent(AriesAgent):
         elif aip == 20:
             if cred_type == CRED_FORMAT_INDY:
                 self.cred_attrs[cred_def_id] = {
-                    "name": "Alice Smith",
-                    "date": "2018-05-28",
-                    "degree": "Maths",
+                    "public_id": "aaaabbbbccccdddd",
+                    "mynumber": "0123456789",
+                    "last_name": "Kojin",
+                    "first_name": "Hanako",
+                    "zip": "0123456",
+                    "pref": "Tokyo",
+                    "city": "Shinjuku",
+                    "address": "XX",
                     "birthdate_dateint": birth_date.strftime(birth_date_format),
-                    "first_name": "Alice",
-                    "timestamp": str(int(time.time())),
                 }
 
                 cred_preview = {
@@ -184,26 +190,26 @@ class FaberAgent(AriesAgent):
             req_attrs = [
                 {
                     "name": "name",
-                    "restrictions": [{"schema_name": "degree schema"}],
+                    "restrictions": [{"schema_name": "mynumber schema"}],
                 },
                 {
                     "name": "date",
-                    "restrictions": [{"schema_name": "degree schema"}],
+                    "restrictions": [{"schema_name": "mynumber schema"}],
                 },
             ]
             if revocation:
                 req_attrs.append(
                     {
-                        "name": "degree",
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "name": "mynumber",
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                         "non_revoked": {"to": int(time.time() - 1)},
                     },
                 )
             else:
                 req_attrs.append(
                     {
-                        "name": "degree",
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "name": "mynumber",
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                     }
                 )
             if SELF_ATTESTED:
@@ -217,7 +223,7 @@ class FaberAgent(AriesAgent):
                     "name": "birthdate_dateint",
                     "p_type": "<=",
                     "p_value": int(birth_date.strftime(birth_date_format)),
-                    "restrictions": [{"schema_name": "degree schema"}],
+                    "restrictions": [{"schema_name": "mynumber schema"}],
                 }
             ]
             indy_proof_request = {
@@ -247,30 +253,30 @@ class FaberAgent(AriesAgent):
                 req_attrs = [
                     {
                         "name": "name",
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                     },
                     {
                         "name": "first_name",
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                     },
                     {
                         "name": "date",
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                     },
                 ]
                 if revocation:
                     req_attrs.append(
                         {
-                            "name": "degree",
-                            "restrictions": [{"schema_name": "degree schema"}],
+                            "name": "mynumber",
+                            "restrictions": [{"schema_name": "mynumber schema"}],
                             "non_revoked": {"to": int(time.time() - 1)},
                         },
                     )
                 else:
                     req_attrs.append(
                         {
-                            "name": "degree",
-                            "restrictions": [{"schema_name": "degree schema"}],
+                            "name": "mynumber",
+                            "restrictions": [{"schema_name": "mynumber schema"}],
                         }
                     )
                 if SELF_ATTESTED:
@@ -284,7 +290,7 @@ class FaberAgent(AriesAgent):
                         "name": "birthdate_dateint",
                         "p_type": "<=",
                         "p_value": int(birth_date.strftime(birth_date_format)),
-                        "restrictions": [{"schema_name": "degree schema"}],
+                        "restrictions": [{"schema_name": "mynumber schema"}],
                     }
                 ]
                 indy_proof_request = {
@@ -408,18 +414,17 @@ async def main(args):
             endorser_role=faber_agent.endorser_role,
         )
 
-        faber_schema_name = "degree schema"
+        faber_schema_name = "mynumber schema"
         faber_schema_attrs = [
-            "name",
-            "date",
-            "degree",
-            "birthdate_dateint",
+            "public_id",
+            "mynumber",
+            "last_name",
             "first_name",
-            # "last_name",
-            # "address",
-            # "public_id",
-            # "mynumber",
-            "timestamp",
+            "zip",
+            "pref",
+            "city",
+            "address",
+            "birthdate_dateint",
         ]
         if faber_agent.cred_type == CRED_FORMAT_INDY:
             faber_agent.public_did = True
@@ -552,7 +557,7 @@ async def main(args):
                     raise Exception(f"Error invalid AIP level: {faber_agent.aip}")
 
             elif option == "2":
-                log_status("#20 Request proof of degree from alice")
+                log_status("#20 Request proof of mynumber from alice")
                 if faber_agent.aip == 10:
                     proof_request_web_request = (
                         faber_agent.agent.generate_proof_request_web_request(
@@ -601,7 +606,7 @@ async def main(args):
                     raise Exception(f"Error invalid AIP level: {faber_agent.aip}")
 
             elif option == "2a":
-                log_status("#20 Request * Connectionless * proof of degree from alice")
+                log_status("#20 Request * Connectionless * proof of mynumber from alice")
                 if faber_agent.aip == 10:
                     proof_request_web_request = (
                         faber_agent.agent.generate_proof_request_web_request(
